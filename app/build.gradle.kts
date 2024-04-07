@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    debugImplementation(libs.androidx.fragment.testing)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation("androidx.test:runner:1.5.2")
 }
