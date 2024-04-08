@@ -44,7 +44,6 @@ class CrimeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.apply {
             // Edit Text Listener
             crimeTitle.doOnTextChanged { text, _, _, _ ->
@@ -62,8 +61,6 @@ class CrimeDetailFragment : Fragment() {
                 crime = crime.copy(isSolved = isChecked)
             }
         }
-
-
 
     }
 
