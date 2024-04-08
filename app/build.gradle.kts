@@ -40,16 +40,17 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     debugImplementation(libs.androidx.fragment.testing)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation(libs.androidx.runner)
 }

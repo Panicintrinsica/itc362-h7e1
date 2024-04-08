@@ -26,7 +26,8 @@ class CrimeDetailFragment : Fragment() {
             id = UUID.randomUUID(),
             title = "Crime #1",
             date = Date(),
-            isSolved = false
+            isSolved = false,
+            requiresPolice = false
         )
     }
 
