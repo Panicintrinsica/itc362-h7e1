@@ -27,8 +27,6 @@ class CrimeHolder(
         } else {
             View.GONE
         }
-
-
     }
 }
 
