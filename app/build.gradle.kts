@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
 }
+
+apply(plugin = "com.google.devtools.ksp")
 
 android {
     namespace = "com.corbin.msu.criminalintent"
@@ -34,6 +37,8 @@ android {
         jvmTarget = "1.8"
     }
 
+
+
     buildFeatures {
         viewBinding = true
     }
@@ -48,6 +53,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.room.compiler)
+    ksp(libs.androidx.room.room.compiler)
     testImplementation(libs.junit)
     debugImplementation(libs.androidx.fragment.testing)
     androidTestImplementation(libs.androidx.espresso.core)

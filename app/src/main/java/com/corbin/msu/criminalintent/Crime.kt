@@ -1,11 +1,15 @@
 package com.corbin.msu.criminalintent
 
 import android.text.format.DateFormat
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 import java.util.UUID
 
-data class Crime (
-    val id: UUID,
+@Entity
+data class Crime(
+
+    @PrimaryKey val id: UUID,
     var title: String,
     val date: Date,
     val isSolved: Boolean,
