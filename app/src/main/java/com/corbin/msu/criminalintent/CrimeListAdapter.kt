@@ -7,20 +7,22 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.corbin.msu.criminalintent.databinding.ListItemCrimeBinding
 import com.corbin.msu.criminalintent.databinding.ListItemCrimePoliceBinding
+import java.util.UUID
 
 class CrimeHolder(
     private val binding: ListItemCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(crime: Crime) {
+    fun bind(crime: Crime, onCrimeClicked: (crimeId:UUID) -> Unit) {
         binding.crimeTitle.text = crime.title
         binding.crimeDate.text = crime.formattedDate
 
         binding.root.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "${crime.title} clicked!",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                binding.root.context,
+//                "${crime.title} clicked!",
+//                Toast.LENGTH_SHORT
+//            ).show()
+            onCrimeClicked(crime.id)
         }
         binding.crimeSolved.visibility = if (crime.isSolved) {
             View.VISIBLE
@@ -33,24 +35,25 @@ class CrimeHolder(
 class PoliceCrimeHolder(
     private val binding: ListItemCrimePoliceBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(crime: Crime) {
+    fun bind(crime: Crime, onCrimeClicked: (crimeId:UUID) -> Unit) {
         binding.crimeTitle.text = crime.title
         binding.crimeDate.text = crime.formattedDate
 
         binding.contactPolice.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "Contacting police for ${crime.title}!",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                binding.root.context,
+//                "Contacting police for ${crime.title}!",
+//                Toast.LENGTH_SHORT
+//            ).show()
         }
 
         binding.root.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "${crime.title} clicked!",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                binding.root.context,
+//                "${crime.title} clicked!",
+//                Toast.LENGTH_SHORT
+//            ).show()
+            onCrimeClicked(crime.id)
         }
 
         binding.crimeSolved.visibility = if (crime.isSolved) {
@@ -62,7 +65,8 @@ class PoliceCrimeHolder(
 }
 
 class CrimeListAdapter(
-    private val crimes: List<Crime>
+    private val crimes: List<Crime>,
+    private val onCrimeClicked: (crimeId:UUID) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -99,8 +103,8 @@ class CrimeListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val crime = crimes[position]
         when (holder) {
-            is CrimeHolder -> holder.bind(crime)
-            is PoliceCrimeHolder -> holder.bind(crime)
+            is CrimeHolder -> holder.bind(crime, onCrimeClicked)
+            is PoliceCrimeHolder -> holder.bind(crime, onCrimeClicked)
         }
     }
 

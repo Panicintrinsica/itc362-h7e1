@@ -6,30 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.corbin.msu.criminalintent.databinding.FragmentCrimeDetailBinding
-import java.util.Date
-import java.util.UUID
+import kotlinx.coroutines.launch
 
 class CrimeDetailFragment : Fragment() {
-
     lateinit var crime: Crime
 
-    private var _binding: FragmentCrimeDetailBinding? = null
-    private val binding
-    get() = checkNotNull(_binding) {
-        "Cannot access binding because it is null. Is the view visible?"
+    private val args: CrimeDetailsFragmentArgs by navArgs()
+
+    private val crimeDetailViewModel: CrimeDetailViewModel by viewModels {
+        CrimeDetailViewModelFactory(args.crimeId)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        crime = Crime(
-            id = UUID.randomUUID(),
-            title = "Crime #1",
-            date = Date(),
-            isSolved = false,
-            requiresPolice = false
-        )
-    }
+    private var _binding: FragmentCrimeDetailBinding? = null
+
+    private val binding
+        get() = checkNotNull(_binding) {
+            "Cannot access binding because it is null. Is the view visible?"
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,23 +44,42 @@ class CrimeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            // Edit Text Listener
             crimeTitle.doOnTextChanged { text, _, _, _ ->
-                crime = crime.copy(title = text.toString())
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(title = text.toString())
+                }
             }
 
-            // Button Listener
             crimeDate.apply {
-                text = crime.date.toString()
                 isEnabled = false
             }
 
-            // Check Box Listener
             crimeSolved.setOnCheckedChangeListener { _, isChecked ->
-                crime = crime.copy(isSolved = isChecked)
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(isSolved = isChecked)
+                }
+            }
+
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    crimeDetailViewModel.crime.collect { crime ->
+                        crime?.let { updateUi(it) }
+                    }
+                }
             }
         }
 
+    }
+
+    private fun updateUi(crime: Crime) {
+        binding.apply {
+            if (crimeTitle.text.toString() != crime.title) {
+                crimeTitle.setText(crime.title)
+            }
+            crimeDate.text = crime.date.toString()
+            crimeSolved.isChecked = crime.isSolved
+        }
     }
 
     override fun onDestroyView() {
