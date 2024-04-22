@@ -16,7 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,7 +36,9 @@ android {
         jvmTarget = "1.8"
     }
 
-
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 
     buildFeatures {
         viewBinding = true
